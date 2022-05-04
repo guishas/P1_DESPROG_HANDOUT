@@ -4,7 +4,34 @@ Sprint 2
 Algoritmo de Programação Dinâmica para o Problema da Quebra em Palavras
 ---------
 
-Para criar um parágrafo, basta escrever um texto contínuo, sem pular linhas.
+O [Algoritmo de Programação Dinâmica para o Problema da Quebra em Palavras](https://www.geeksforgeeks.org/word-break-problem-dp-32/) busca resolver um problema interessante. Vamos primeiro imaginar que temos um 
+conjunto de palavras separadas, como o dicionário abaixo. Agora, imagine que queremos saber se um conjunto de 
+caracteres, como a string abaixo, consegue ser segmentado em uma sequência de palavras desse nosso dicionário separadas por espaço. 
+
+``` py
+dicionario = {"i", "like", "ice", "cream", "icecream", "sam", "sung", "samsung"}
+string = "ilikeicecream"
+```
+
+??? Exercício
+
+Pense um pouco e responda, no exemplo acima, você acha que é possível segmentar a string em uma sequência 
+de palavras do nosso dicionário?
+
+::: Gabarito
+Sim! É possível segmentar a nossa string em um conjunto de palavras presentes no dicionário. As sequências de palavras seria:
+``` py 
+i like ice cream
+i like icecream
+```
+
+Perceba que podemos formar duas sequências de palavras! Não apenas uma.
+
+:::
+
+???
+
+Normalmente, a saída do algoritmo vai nos retornar verdadeiro (**True**), se for possível formar pelo menos uma sequência de palavras, ou falso (**False**) se não for possível formar uma sequência.
 
 Você também pode criar
 
