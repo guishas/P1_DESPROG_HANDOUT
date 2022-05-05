@@ -137,7 +137,7 @@ def wordBreak(string, dicionario):
 Algoritmo Recursivo
 --------
 
-Agora sim! Temos nosso algoritmo pronto.
+Agora sim! Temos nosso algoritmo recursivo para o problema da quebra em palavras.
 
 ``` py 
 def wordBreak(string, dicionario):
@@ -168,25 +168,26 @@ Basicamente, o que a função `md wordBreak` está fazendo é:
 
 6. Se não, volta para o passo 2 porém acessa o próximo índice e repete os passos até que a função acabe
 
-Explicação
+??? Como a recursividade funciona
 
-??? Exemplo
+``` py 
+string = 'code'
+dicionario = {'c', 'od', 'e', 'x'}
 
-* Input: **"code"**
+wordBreak(string, dicionario)
+```
 
-* Dicionário: **{c, od, e, x}**
-
-::: Output
-![](recursive/recursive1.png)
+::: Árvore de recursividade
+![](recursive/1.png)
 
 
-{green}(*True*)
+
 :::
 
 ???
 
 
-Usando a árvore recursiva do exercício anterior como exemplo, podemos calcular a complexidade no tempo do algoritmo recursivo. O **primeiro passo** será olhar para a árvore e contar quantas chamadas da função onde temos uma string não vazia. 
+Usando a árvore recursiva acima, podemos calcular a complexidade no tempo do algoritmo recursivo. O **primeiro passo** será olhar para a árvore e contar quantas chamadas da função onde temos uma string não vazia. 
 
 :recursive
 
@@ -206,6 +207,37 @@ Dessa forma, para **n** diferentes, temos:
 | **5**        | **16**       |
 | **6**        | **32**       |
 | **...**      | **...**  |
+
+Portanto, a complexidade no tempo do algoritmo recursivo é **O($2^n$)**.
+
+Ingenuidade
+-----------
+
+Claramente, a complexidade desse algoritmo recursivo é horrível, basta visualizar a árvore de chamadas recursivas acima. Essa visualização evidencia o motivo da ineficiência: redundância de chamadas. É possível perceber que fazemos **duas** chamadas iguais de **WB(de)** e **quatro** chamadas iguais de **WD(e)**. A imagem abaixo deixa isso visível para vocês.
+
+![](redundance.png)
+
+O algoritmo melhorado
+---------------------
+
+Para resolver a ineficiência acima, podemos fazer uma modificação muito simples: manter um *cache* que armazena o resultado das chamadas já feitas. Esse cache pode ser, por exemplo, uma lista `md wb[tamanho]`, onde `md tamanho` é o tamanho da string de entrada + 1. 
+
+A ideia é armazenar em cada índice `md i` o retorno do algoritmo usando a string de entrada `md string[0:i]`. Inicialmente, todo elemento da lista `md wb[tamanho]` é inicializado com algum valor inválido, digamos `md -1`, indicando que o valor `md wb[string[0:i]` ainda não foi calculado. Depois dessa inicialização, basta rodar uma versão modificada da recursão, que simplesmente devolve o resultado pronto se ele já foi calculado antes.
+
+``` py 
+def wordBreak(string, dicionario):
+    tamanho = len(string)
+
+    if (string == '') {
+        return True
+    }
+
+    for i in range(1, tamanho+1):
+        if string[0:i] in dicionario and wordBreak(string[i:tamanho], dicionario):
+            return True
+        
+    return False
+```
 
 Aplicações
 --------
@@ -244,10 +276,34 @@ Comparando o algoritmo recursivo com o algoritmo dinâmico
 ------------
 
 |--------------------------------|----------|
-| **Recursivo**        | {red}(**$$O(2^n)$$**)   | 
-| **Dinâmico**         | {green}(**$$O(n)$$**)     |
+| **Recursivo**        | {red}(**$O(2^n)$**)   | 
+| **Dinâmico**         | {green}(**$O(n)$**)     |
 
 ??? Exercício 1
+
+Dado o dicionário abaixo e a string de entrada, quais seriam as possíveis sequências de palavras formadas?
+
+ py 
+dicionario = {'hoje', 'vou', 'jogar', 'play', 'station', 'playstation', 'de', 
+              'cadeira', 'sofa'}
+
+string = 'hojevoujogarplaystation'
+
+
+::: Gabarito
+
+As possíveis sequências de palavras seriam:
+
+ py
+hoje vou jogar play station
+hoje vou jogar playstation
+
+
+:::
+
+???
+
+??? Exercício 2
 
 Dado o dicionário e a string de entrada abaixo, o que seria printado no terminal?
 
@@ -270,7 +326,7 @@ True
 
 ???
 
-??? Exercício 2
+??? Exercício 3
 
 Dado o dicionário abaixo, o que seria printado no terminal?
 
