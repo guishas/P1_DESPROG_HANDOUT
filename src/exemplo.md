@@ -119,9 +119,8 @@ Err... quase, o código acima possui dois erros. Quais?
 def wordBreak(string, dicionario):
     tamanho = len(string)
 
-    if (string == '') {
+    if string == '':
         return True
-    }
 
     for i in range(1, tamanho+1):
         if string[0:i] in dicionario and wordBreak(string[i:tamanho], dicionario):
@@ -143,9 +142,8 @@ Agora sim! Temos nosso algoritmo recursivo para o problema da quebra em palavras
 def wordBreak(string, dicionario):
     tamanho = len(string)
 
-    if (string == '') {
+    if string == '':
         return True
-    }
 
     for i in range(1, tamanho+1):
         if string[0:i] in dicionario and wordBreak(string[i:tamanho], dicionario):
@@ -222,82 +220,127 @@ O algoritmo melhorado
 
 Para resolver a ineficiência acima, podemos fazer uma modificação muito simples: manter um *cache* que armazena o resultado das chamadas já feitas. Esse cache pode ser, por exemplo, uma lista `md wb[tamanho]`, onde `md tamanho` é o tamanho da string de entrada + 1. 
 
-A ideia é armazenar em cada índice `md i` o retorno do algoritmo usando a string de entrada `md string[0:i]`. Inicialmente, todo elemento da lista `md wb[tamanho]` é inicializado com algum valor inválido, digamos `md -1`, indicando que o valor `md wb[string[0:i]` ainda não foi calculado. Depois dessa inicialização, basta rodar uma versão modificada da recursão, que simplesmente devolve o resultado pronto se ele já foi calculado antes.
+A ideia é armazenar em cada índice `md i` o retorno do algoritmo usando a string de entrada `md string[0:i]`. Inicialmente, todo elemento da lista `md wb[tamanho]` é inicializado com algum valor inválido, digamos `md False`, indicando que o valor `md wb[string[0:i]` ainda não foi calculado. Depois dessa inicialização, basta rodar uma versão modificada da recursão, que simplesmente devolve o resultado pronto se ele já foi calculado antes.
+
+Essa estratégia é conhecida como [memoização](https://en.wikipedia.org/wiki/Memoization).
+
+Mas calma! Isso significa que, para resolver o problema, precisamos apenas preencher a lista. E aí temos o pulo do gato: não precisamos de um algoritmo recursivo para fazer isso. Esse preenchimento pode ser feito por um algoritmo interativo!
+
+Vamos usar essa sacada para reescrever nosso algoritmo, escondendo a recursão.
+
+??? O algoritmo melhorado
+
+::: Descubra!
 
 ``` py 
-def wordBreak(string, dicionario):
+def dynamicWordBreak(string, dicionario):
     tamanho = len(string)
 
-    if (string == '') {
+    if tamanho == 0:
         return True
-    }
+
+    # Cria lista com tamanho posições e cada posição com o valor -1
+    wb = [False]*(tamanho+1)
 
     for i in range(1, tamanho+1):
-        if string[0:i] in dicionario and wordBreak(string[i:tamanho], dicionario):
-            return True
         
+        # Se wb[i] for False, checamos se o prefixo está no dicionário
+        if wb[i] == False and string[0:i] in dicionario:
+            wb[i] = True
+        
+        # Se wb[i] for True, checamos todas as substrings começando de i+1
+        # e guarda os resultados
+        if wb[i] == True:
+
+             # Chegou no último índice, retorna True
+            if i == tamanho:
+                return True
+            
+            for j in range(i+1, tamanho+1):
+
+                # Atualiza wb[j] se for False e está no dicionário
+                if wb[j] == False and string[i:j] in dicionario:
+                    wb[j] = True
+
+                # Chegou no último caractere
+                if j == tamanho and wb[j] == True:
+                    return True
+    
+    # Se checamos todos os índices e não retornou True
+    # Retorna False e termina
     return False
 ```
 
-Aplicações
+Esse algoritmo melhorado pode parecer confuso, mas não é tão difícil quanto parece. (Falta explicação aqui).
+
+:::
+
+???
+
+Essa estratégia é conhecida como [programação dinâmica](https://en.wikipedia.org/wiki/Dynamic_programming) e  por conta dela a complexidade desse algoritmo é $O(n)$. Esse algoritmo acima é chamado de [Algoritmo de Programação Dinâmica para o Problema da Quebra em Palavras](https://www.geeksforgeeks.org/word-break-problem-dp-32/)! Bonito né?
+
+Agora podemos comparar a eficiência dos dois algoritmos!
+
+| Algoritmo            |  Complexidade       |
+|----------------------|---------------------|
+| **Recursivo**        | {red}(**$O(2^n)$**) | 
+| **Dinâmico**         | {green}(**$O(n)$**) |
+
+Aqui vai o algoritmo melhor ainda (Algoritmo Dinâmico Otimizado).
 --------
+
+Aplicações
+----------
 
 O algoritmo é interessante pois permite que algumas aplicações sejam otimizadas:
 
 * Motor de pesquisa/busca
 
-  Ao fazer uma pesquisa no [Google](https://www.google.com.br/) ou outros mecanismos de busca, mesmo que a frase esteja errada, incompleta ou sem espaços, o algoritmo entende o que você gostaria de pesquisar. Mas você ja pensou em como isso pode ser feito? 
+Ao fazer uma pesquisa no [Google](https://www.google.com.br/) ou outros mecanismos de busca, mesmo que a frase esteja errada, incompleta ou sem espaços, o algoritmo entende o que você gostaria de pesquisar. Mas você ja pensou em como isso pode ser feito? 
 
 ??? Exemplo
 ![](exemplo-google.png)
 ???
 
-   O nosso algoritmo seria uma maneira alternativa de chegar no mesmo resultado do Google!  
+O nosso algoritmo seria uma maneira alternativa de chegar no mesmo resultado do Google!  
 
 * Identificador de plágio
 
-    Outro exemplo de aplicação possível seria usar o algoritmo para construir um identificador de plágio. Mas como isso funcionaria?
-    
-    Primeiro, separamos as palavras do texto original e a definimos como o dicionário fixo. Em seguida, passamos a sequência de caracteres do texto que desejamos verificar. 
-    
-    Com base na proporção das respostas, chegamos à uma conclusão se o texto foi de fato plagiado ou não. Algumas situações onde essa aplicação se tornaria útil: Correções textuais de escolas/faculdades, citações de textos cíentificos, etc. 
+Outro exemplo de aplicação possível seria usar o algoritmo para construir um identificador de plágio. Mas como isso funcionaria?
+
+Primeiro, separamos as palavras do texto original e a definimos como o dicionário fixo. Em seguida, passamos a sequência de caracteres do texto que desejamos verificar. 
+
+Com base na proporção das respostas, chegamos à uma conclusão se o texto foi de fato plagiado ou não. Algumas situações onde essa aplicação se tornaria útil: correções textuais de escolas/faculdades, citações de textos cíentificos, etc. 
 
 ??? Curiosidade
 
-:::
+::: Clique aqui
 
-O algoritmo é um dos mais requiridos em entrevistas de software de grandes empresas como Google, Facebook, Amazon, etc. Fica a dica!
+O algoritmo/problema é um dos mais requiridos em entrevistas de emprego de grandes empresas como Google, Facebook, Amazon, etc. Fica a dica!
 
 :::
 
 ???
 
-Comparando o algoritmo recursivo com o algoritmo dinâmico
-------------
-
-|--------------------------------|----------|
-| **Recursivo**        | {red}(**$O(2^n)$**)   | 
-| **Dinâmico**         | {green}(**$O(n)$**)     |
-
 ??? Exercício 1
 
 Dado o dicionário abaixo e a string de entrada, quais seriam as possíveis sequências de palavras formadas?
 
- py 
+```py 
 dicionario = {'hoje', 'vou', 'jogar', 'play', 'station', 'playstation', 'de', 
-              'cadeira', 'sofa'}
+'cadeira', 'sofa'}
 
 string = 'hojevoujogarplaystation'
-
+```
 
 ::: Gabarito
 
 As possíveis sequências de palavras seriam:
 
- py
+```py
 hoje vou jogar play station
 hoje vou jogar playstation
-
+```
 
 :::
 
@@ -351,20 +394,22 @@ True
 False
 True
 False
-False
+True
 ```
 
 !!! Cuidado
-Repare que na útlima chamada, a palavra `md querobo` presente no dicionário faz com que a função retorne `md False` pois o sufixo `md lodechá` não satisfaz as checagens da função.
+Repare que na útlima chamada, a palavra `md querobo` presente no dicionário faz com que a única sequência de palavras possível seria: `md quero bolo de chá`, pois quando o algoritmo checar o cojunto de caracteres `md querobo`, vai ver que está presente no dicionário e vai recursivamente checar se o sufixo pode formar uma sequência, mas o sufixo `md lodechá` não permite formar um sequência que está presente no dicionário!
 !!!
 
 :::
 
 ???
 
-??? Desafio 1
+??? Desafio
 
 É possível modificar o algoritmo recursivo para nos retornar todas as possíveis separações da string de entrada ao invés de retornar `md True` ou `md False`. Tente implementar essa modificação.
+
+**Dica:** Pense em como armazenar a string de saída e preenchê-la ao longo do loop.
 
 ::: Gabarito
 
@@ -402,77 +447,6 @@ i love icecream and man go
 i love icecream and mango
 ```
 
-:::
-
-???
-
-Você também pode criar
-
-1. listas;
-
-2. ordenadas,
-
-assim como
-
-* listas;
-
-* não-ordenadas
-
-e imagens. Lembre que todas as imagens devem estar em uma subpasta *img*.
-
-![](logo.png)
-
-Para tabelas, usa-se a [notação do
-MultiMarkdown](https://fletcher.github.io/MultiMarkdown-6/syntax/tables.html),
-que é muito flexível. Vale a pena abrir esse link para saber todas as
-possibilidades.
-
-| coluna a | coluna b |
-|----------|----------|
-| 1        | 2        |
-
-Ao longo de um texto, você pode usar *itálico*, **negrito**, {red}(vermelho) e
-[[tecla]]. Também pode usar uma equação LaTeX: $f(n) \leq g(n)$. Se for muito
-grande, você pode isolá-la em um parágrafo.
-
-$$\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} \leq 1$$
-
-Para inserir uma animação, use `md :` seguido do nome de uma pasta onde as
-imagens estão. Essa pasta também deve estar em *img*.
-
-:bubble
-
-Você também pode inserir código, inclusive especificando a linguagem.
-
-``` py
-def f():
-    print('hello world')
-```
-
-``` c
-void f() {
-    printf("hello world\n");
-}
-```
-
-Se não especificar nenhuma, o código fica com colorização de terminal.
-
-```
-hello world
-```
-
-
-!!! Aviso
-Este é um exemplo de aviso, entre `md !!!`.
-!!!
-
-
-??? Exercício
-
-Este é um exemplo de exercício, entre `md ???`.
-
-::: Gabarito
-Este é um exemplo de gabarito, entre `md :::`.
 :::
 
 ???
