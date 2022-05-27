@@ -4,17 +4,20 @@ Sprint 2
 Primeira ideia
 -------------
 
-Vamos primeiro imaginar que temos um conjunto de palavras separadas, como o dicionário abaixo. Agora, imagine que queremos saber se um conjunto de caracteres, como a string abaixo, consegue ser segmentado em uma sequência de palavras desse nosso dicionário separadas por espaço. 
+Vamos primeiro imaginar que temos um conjunto de palavras separadas, como o dicionário abaixo. Agora, imagine que queremos saber se um conjunto de caracteres, consegue ser segmentado em uma sequência de palavras desse nosso dicionário separadas por espaço. 
 
 ``` py
 dicionario = {"i", "like", "ice", "cream", "icecream", "sam", "sung", "samsung"}
-string = "ilikeicecream"
 ```
 
-??? Checkpoint
+??? Exemplo 1 
 
-Pense um pouco e responda, no exemplo acima, você acha que é possível segmentar a string em uma sequência 
+Pense um pouco e responda, usando o dicionário acima, você acha que é possível segmentar a string abaixo em uma sequência 
 de palavras do nosso dicionário?
+
+``` py
+string = "ilikeicecream"
+```
 
 ::: Gabarito
 Sim! É possível segmentar a nossa string em um conjunto de palavras presentes no dicionário. As sequências de palavras seriam:
@@ -30,31 +33,80 @@ Perceba que podemos formar duas sequências de palavras! Não apenas uma.
 
 ???
 
-<!-- Normalmente, a saída do algoritmo vai nos retornar verdadeiro (**True**), se for possível formar pelo menos uma sequência de palavras, ou falso (**False**) se não for possível formar uma sequência. -->
+??? Exemplo 2
 
-Mas espera, batendo o olho assim é fácil responder mas como o computador vai saber responder esse problema se ele não é capaz de olhar? O que é preciso fazer para chegar na resposta?
+Mantendo o mesmo dicionário, mas agora uma string diferente, você acha que é possível segmentá-la em uma sequência 
+de palavras?
 
-??? Checkpoint
-
-Tente elaborar uma lógica **simples** para solucionar o problema.
-
-::: Gabarito
-
-De forma bem simples, tudo que devemos fazer é percorrer a string de entrada e checar se o sufixo, que sempre começa sendo o primeiro caractere da string, está presente no dicionário, se ele estiver e o resto da string pode ser quebrada em palavras do dicionário retornamos `md True`, caso o loop termine e não tenha retornado true, é porque não foi possível separar a string de entrada em palavras do dicionário e por isso retornamos `md False`.
-
-``` py 
-enquanto existem caracteres não checados
-    se sufixo está no dicionário e o resto da string pode ser quebrada em palavras do dicionário
-        retorna verdadeiro
-    
-se acabar o loop, retorna falso
+``` py
+string = "ilikecake"
 ```
 
-Se não entendeu, não se desepere, vamos destrinchar essa ideia mais pra frente.
+::: Gabarito
+Não! Embora partes da palavra estão presentes no dicionário, "cake" não está. Ou seja, não é possível segmentar essa string em um conjunto de palavras presentes no dicionário. 
+
+:::
+
+
+???
+
+??? Exemplo 3
+
+Você ja deve ter pegado a ideia, mas para verificar isso, um último exemplo. Usando o mesmo dicionário, você acha que é possível segmentar a string abaixo em um conjunto de palavras do dicionário?
+
+``` py
+string = "ilikesamssung"
+```
+
+::: Gabarito
+Não! Se você pensou que era possível, cuidado! O fato de existir o "s" entre "sam" "sung", que são palavras do dicionário, impede que essa string possa ser segmentada. 
+:::
+
+???
+
+
+Aplicações
+----------
+
+O algoritmo é interessante pois permite que algumas aplicações sejam otimizadas:
+
+* Motor de pesquisa/busca
+
+Ao fazer uma pesquisa no [Google](https://www.google.com.br/) ou outros mecanismos de busca, mesmo que a frase esteja errada, incompleta ou sem espaços, o algoritmo entende o que você gostaria de pesquisar. Mas você ja pensou em como isso pode ser feito? 
+
+??? Exemplo
+![](exemplo-google.png)
+???
+
+O nosso algoritmo seria uma maneira alternativa de chegar no mesmo resultado do Google!  
+
+* Identificador de plágio
+
+Outro exemplo de aplicação possível seria usar o algoritmo para construir um identificador de plágio. Mas como isso funcionaria?
+
+Primeiro, separamos as palavras do texto original e a definimos como o dicionário fixo. Em seguida, passamos a sequência de caracteres do texto que desejamos verificar. 
+
+Com base na proporção das respostas, chegamos à uma conclusão se o texto foi de fato plagiado ou não. Algumas situações onde essa aplicação se tornaria útil: correções textuais de escolas/faculdades, citações de textos cíentificos, etc. 
+
+??? Curiosidade
+
+::: Clique aqui
+
+O algoritmo/problema é um dos mais requiridos em entrevistas de software de grandes empresas como Google, Facebook, Amazon, etc. Fica a dica!
 
 :::
 
 ???
+
+
+Algoritmo Ingênuo
+--------
+
+lógica simples aqui
+
+abordar o algoritmo de uma forma ingênua, pequenos passos para o usúario ir percebendo que aqui caberia uma recursividade
+
+
 
 Para facilitar o entendimento, vamos implementar nossa ideia inicial em Python.
 
@@ -289,38 +341,6 @@ Agora podemos comparar a eficiência dos dois algoritmos!
 Aqui vai o algoritmo melhor ainda (Algoritmo Dinâmico Otimizado).
 --------
 
-Aplicações
-----------
-
-O algoritmo é interessante pois permite que algumas aplicações sejam otimizadas:
-
-* Motor de pesquisa/busca
-
-Ao fazer uma pesquisa no [Google](https://www.google.com.br/) ou outros mecanismos de busca, mesmo que a frase esteja errada, incompleta ou sem espaços, o algoritmo entende o que você gostaria de pesquisar. Mas você ja pensou em como isso pode ser feito? 
-
-??? Exemplo
-![](exemplo-google.png)
-???
-
-O nosso algoritmo seria uma maneira alternativa de chegar no mesmo resultado do Google!  
-
-* Identificador de plágio
-
-Outro exemplo de aplicação possível seria usar o algoritmo para construir um identificador de plágio. Mas como isso funcionaria?
-
-Primeiro, separamos as palavras do texto original e a definimos como o dicionário fixo. Em seguida, passamos a sequência de caracteres do texto que desejamos verificar. 
-
-Com base na proporção das respostas, chegamos à uma conclusão se o texto foi de fato plagiado ou não. Algumas situações onde essa aplicação se tornaria útil: correções textuais de escolas/faculdades, citações de textos cíentificos, etc. 
-
-??? Curiosidade
-
-::: Clique aqui
-
-O algoritmo/problema é um dos mais requiridos em entrevistas de emprego de grandes empresas como Google, Facebook, Amazon, etc. Fica a dica!
-
-:::
-
-???
 
 ??? Exercício 1
 
