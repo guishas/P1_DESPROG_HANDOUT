@@ -52,14 +52,16 @@ Não! Embora partes da palavra estão presentes no dicionário, "cake" não est�
 
 ??? Exemplo 3
 
-Você ja deve ter pegado a ideia, mas para verificar isso, um último exemplo. Usando o mesmo dicionário, você acha que é possível segmentar a string abaixo em um conjunto de palavras do dicionário?
+Você já deve ter pegado a ideia, mas para verificar com um último exemplo. Usando o mesmo dicionário, você acha que é possível segmentar a string abaixo em um conjunto de palavras do dicionário?
 
 ``` py
 string = "ilikesamssung"
 ```
 
 ::: Gabarito
+
 Não! Se você pensou que era possível, cuidado! O fato de existir o "s" entre "sam" "sung", que são palavras do dicionário, impede que essa string possa ser segmentada. 
+
 :::
 
 ???
@@ -157,33 +159,11 @@ def wordBreak(string, dicionario):
     return False
 ```
 
-??? Checkpoint
-
-Err... quase, o código acima possui dois erros. Quais?
-
-::: Gabarito
+Mas calma, nosso algoritmo ainda não está 100% pronto, ele possui dois erros:
 
 1. O primeiro erro é sobre a função range(). Em python, a função range() recebe como segundo parâmetro onde devemos parar, porém esse número não está incluso, por isso devemos adicionar 1 no tamanho da string para poder percorrer ela até o final!
 
 2. O segundo erro é que a nossa função nunca vai acabar, porque não temos uma condição para acabar com a recursividade. Para resolver esse problema, podemos colocar uma checagem se a string de entrada for vazia, pois no final do loop, a variável `md i` vai ser igual ao tamanho da string e por isso tentaremos passar para a função a string de entrada `md string[tamanho:tamanho]`, e isso é uma string vazia `md ''`. Caso essa checagem seja verdadeira, retornamos `md True`.
-
-``` py 
-def wordBreak(string, dicionario):
-    tamanho = len(string)
-
-    if string == '':
-        return True
-
-    for i in range(1, tamanho+1):
-        if string[0:i] in dicionario and wordBreak(string[i:tamanho], dicionario):
-            return True
-        
-    return False
-```
-
-:::
-
-???
 
 Algoritmo Recursivo
 --------
@@ -337,9 +317,6 @@ Agora podemos comparar a eficiência dos dois algoritmos!
 |----------------------|---------------------|
 | **Recursivo**        | {red}(**$O(2^n)$**) | 
 | **Dinâmico**         | {green}(**$O(n)$**) |
-
-Aqui vai o algoritmo melhor ainda (Algoritmo Dinâmico Otimizado).
---------
 
 
 ??? Exercício 1
