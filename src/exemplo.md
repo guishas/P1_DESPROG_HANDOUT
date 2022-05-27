@@ -102,15 +102,34 @@ O algoritmo/problema é um dos mais requiridos em entrevistas de software de gra
 
 
 Algoritmo Ingênuo
---------
+-----------------
 
-lógica simples aqui
+Bom, agora que você já entendeu como o algoritmo funciona, podemos implementá-lo. Vamos por partes.
 
-abordar o algoritmo de uma forma ingênua, pequenos passos para o usúario ir percebendo que aqui caberia uma recursividade
+Queremos que nosso algoritmo percorra a string inicial até o final. Isso é fácil.
 
+``` py 
+def wordBreak(string, dicionario):
+    tamanho = len(string)
 
+    for i in range(1, tamanho):
+       
+```
 
-Para facilitar o entendimento, vamos implementar nossa ideia inicial em Python.
+Agora, precisamos checar se uma parte dessa string está presente no dicionário **E** se o resto da string pode ser quebrada em palavras do dicionário. Isso explica o nosso `md for` começar em 1, isso nos permite escrever o código abaixo.
+
+``` py 
+def wordBreak(string, dicionario):
+    tamanho = len(string)
+
+    for i in range(1, tamanho):
+        if string[0:i] in dicionario and resto da string pode ser quebrada em palavras do dicionário:
+
+```
+
+Vamos deixar a parte do `md resto da string pode ser quebrada em palavras do dicionário` para depois, mas já vai imaginando o que entra aqui.
+
+Se essas condições forem ambas verdadeiras, significa que é possível segmentar a string inicial em palavras do dicionário, por isso, podemos retornar True. Sendo assim, se o `md for` finalizar e não retornar True significa que não é possível segmentar a string inicial.
 
 ``` py 
 def wordBreak(string, dicionario):
@@ -119,17 +138,12 @@ def wordBreak(string, dicionario):
     for i in range(1, tamanho):
         if string[0:i] in dicionario and resto da string pode ser quebrada em palavras do dicionário:
             return True
-        
+
     return False
+
 ```
 
-??? Checkpoint
-
-Como vocês podem ver, o código está incompleto, qual código em python deve ser escrito para substituir `md resto da string pode ser quebrado em palavras do dicionário`?
-
-::: Gabarito
-
-Nesse caso, devemos usar recursividade! Para saber se o resto da string pode ser quebrada em palavras do dicionário precisamos simplesmente chamar a função wordBreak passando como parâmetro de string de entrada o nosso prefixo (restante da string)! O código em python ficaria:
+Estamos quase lá! Agora, vamos pensar sobre a comparação `md resto da string pode ser quebrada em palavras do dicionário`. Se pensar bem, o que nossa função faz no momento é checar se uma substring está no dicionário e se o resto dela também está e isso é exatamente o que a gente quer, então basta escrevermos a mesma função para finalizar o algoritmo. Mas, o que significa escrever/fazer a mesma função? Podemos simplesmente chamar ela novamente usando recursividade e passar como parâmetros o resto da string inicial que falta ser comparada, e isso é bem simples. Usando o fatiamento de strings do python, podemos simplesmente escrever `md string[i:tamanho]` para representar a string restante!
 
 ``` py 
 def wordBreak(string, dicionario):
@@ -142,24 +156,11 @@ def wordBreak(string, dicionario):
     return False
 ```
 
-:::
-
-???
+Faz sentido, não faz? ;)
 
 Pronto, então temos o código do nosso algoritmo que resolve o problema!
 
-``` py 
-def wordBreak(string, dicionario):
-    tamanho = len(string)
-
-    for i in range(1, tamanho):
-        if string[0:i] in dicionario and wordBreak(string[i:tamanho], dicionario):
-            return True
-        
-    return False
-```
-
-Mas calma, nosso algoritmo ainda não está 100% pronto, ele possui dois erros:
+Calma..., nosso algoritmo ainda não está 100% pronto, ele possui dois erros:
 
 1. O primeiro erro é sobre a função range(). Em python, a função range() recebe como segundo parâmetro onde devemos parar, porém esse número não está incluso, por isso devemos adicionar 1 no tamanho da string para poder percorrer ela até o final!
 
@@ -303,7 +304,7 @@ def dynamicWordBreak(string, dicionario):
     return False
 ```
 
-Esse algoritmo melhorado pode parecer confuso, mas não é tão difícil quanto parece. (Falta explicação aqui).
+Esse algoritmo melhorado pode parecer confuso, mas não é tão difícil quanto parece.
 
 :::
 
@@ -313,10 +314,10 @@ Essa estratégia é conhecida como [programação dinâmica](https://en.wikipedi
 
 Agora podemos comparar a eficiência dos dois algoritmos!
 
-| Algoritmo            |  Complexidade       |
-|----------------------|---------------------|
-| **Recursivo**        | {red}(**$O(2^n)$**) | 
-| **Dinâmico**         | {green}(**$O(n)$**) |
+| Algoritmo            |  Complexidade              |
+|----------------------|----------------------------|
+| **Recursivo**        | {red}(**Exponencial**)     | 
+| **Dinâmico**         | {green}(**Linear**) |
 
 
 ??? Exercício 1
@@ -402,7 +403,7 @@ Repare que na útlima chamada, a palavra `md querobo` presente no dicionário fa
 
 ???
 
-??? Desafio
+<!-- ??? Desafio
 
 É possível modificar o algoritmo recursivo para nos retornar todas as possíveis separações da string de entrada ao invés de retornar `md True` ou `md False`. Tente implementar essa modificação.
 
@@ -446,4 +447,4 @@ i love icecream and mango
 
 :::
 
-???
+??? -->
