@@ -199,7 +199,7 @@ Basicamente, o que a função `md wordBreak` está fazendo é:
 
 6. Se não, volta para o passo 2 porém acessa o próximo índice e repete os passos até que a função acabe
 
-??? Como a recursividade funciona
+??? Ilustrando a recursividade
 
 ``` py 
 string = 'code'
@@ -208,38 +208,15 @@ dicionario = {'c', 'od', 'e', 'x'}
 wordBreak(string, dicionario)
 ```
 
-::: Árvore de recursividade
-![](recursive/1.png)
-
-
-
-:::
+:tree
 
 ???
 
-
-Usando a árvore recursiva acima, podemos calcular a complexidade no tempo do algoritmo recursivo. O **primeiro passo** será olhar para a árvore e contar quantas chamadas da função onde temos uma string não vazia. 
-
-:recursive
-
 A string orginal ("code") possui 4 caracteres (c, o, d, e). Logo: $$n = 4$$
 
-A quantidade de chamadas recursivas não vazias, a qual depende de n, pode ser expressa da seguinte forma: $$Chamadas = 2^{n-1}$$
+Ao analisar a árvore de recursividade, percebemos que ela aumenta exponencialmente conforme n aumenta.
 
-Dessa forma, para **n** diferentes, temos:
-
-
-| **n**       | **Chamadas** |
-|--------------|--------------|
-| **1**        | **1**        |
-| **2**        | **2**        |
-| **3**        | **4**        |
-| **4**        | **8**        |
-| **5**        | **16**       |
-| **6**        | **32**       |
-| **...**      | **...**  |
-
-Portanto, a complexidade no tempo do algoritmo recursivo é **O($2^n$)**.
+Dessa forma, podemos concluir que nosso algorítmo tem uma complexidade exponencial, uma das piores possíveis, sendo então *O($b^n$)*, em que b > 1.
 
 Ingenuidade
 -----------
