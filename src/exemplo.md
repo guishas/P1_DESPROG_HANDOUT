@@ -108,6 +108,20 @@ Bom, agora que você já entendeu como o algoritmo funciona, podemos implementá
 
 Queremos que nosso algoritmo percorra a string inicial até o final. Isso é fácil.
 
+??? Atividade 1
+
+Como ficaria o código que percorre a string inicial do seu segundo caractere ao último.
+
+``` py 
+def wordBreak(string, dicionario):
+
+       
+```
+
+**Dica:** Você recebe a string inicial, use-a.
+
+::: Gabarito
+
 ``` py 
 def wordBreak(string, dicionario):
     tamanho = len(string)
@@ -116,7 +130,19 @@ def wordBreak(string, dicionario):
        
 ```
 
-Agora, precisamos checar se uma parte dessa string está presente no dicionário **E** se o resto da string pode ser quebrada em palavras do dicionário. Isso explica o nosso `md for` começar em 1, isso nos permite escrever o código abaixo.
+Não estranhe começarmos pelo segundo caractere, será explicado abaixo.
+
+:::
+
+???
+
+Agora, precisamos checar se uma parte dessa string está presente no dicionário **E** se o resto da string pode ser quebrada em palavras do dicionário. Qual é essa parte que devemos checar se está presente no dicionário ou não? 
+
+??? Atividade 2
+
+Lembre que o `md for` começa do segundo caractere e vai até ao último e isso vai ser muito útil para nós. Pense
+
+???
 
 ``` py 
 def wordBreak(string, dicionario):
@@ -216,7 +242,7 @@ A string orginal ("code") possui 4 caracteres (c, o, d, e). Logo: $$n = 4$$
 
 Ao analisar a árvore de recursividade, percebemos que ela aumenta exponencialmente conforme n aumenta.
 
-Dessa forma, podemos concluir que nosso algorítmo tem uma complexidade exponencial, uma das piores possíveis, sendo então *O($b^n$)*, em que b > 1.
+Dessa forma, podemos concluir que nosso algorítmo tem uma complexidade exponencial, uma das piores possíveis, sendo então **O($b^n$)**, onde b > 1.
 
 Ingenuidade
 -----------
