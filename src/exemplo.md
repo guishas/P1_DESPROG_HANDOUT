@@ -1,8 +1,8 @@
-Sprint 2
-======
+Algoritmo de Programação Dinâmica para o Problema da Quebra em Palavras
+=======================================================================
 
 Primeira ideia
--------------
+--------------
 
 Vamos primeiro imaginar que temos um conjunto de palavras separadas, como o dicionário abaixo. Agora, imagine que queremos saber se um conjunto de caracteres, consegue ser segmentado em uma sequência de palavras desse nosso dicionário separadas por espaço. 
 
@@ -267,7 +267,7 @@ Você consegue identificar esse erro?
 
 ::: Gabarito
 
-A nossa função recursiva precisa acabar em algum momento, caso contrário, poderemos ter problemas. Para solucionar isso, basta olharmos para o **Passo 6**. Precisamos isolar o caso em que o parâmetro é o menor possível, o que no nosso caso não é trivial pois nosso parâmetro não é simplesmente um número. Voltando um pouco, vimos que nossa código ia ficar assim: 
+A nossa função recursiva precisa acabar em algum momento, caso contrário, poderemos ter problemas. Para solucionar isso, basta olharmos para o **Passo 6**. Precisamos isolar o caso em que o parâmetro é o menor possível, o que no nosso caso não é trivial pois nosso parâmetro não é simplesmente um número. Voltando um pouco, vimos que nosso código ia ficar assim: 
 
 ``` py 
 def wordBreak(string, dicionario):
@@ -316,7 +316,7 @@ def wordBreak(string, dicionario):
     if string == '':
         return True
 
-    for i in range(1, tamanho+1):
+    for i in range(1, tamanho):
         if string[0:i] in dicionario and wordBreak(string[i:tamanho], dicionario):
             return True
         
@@ -387,10 +387,10 @@ def dynamicWordBreak(string, dicionario):
     if tamanho == 0:
         return True
 
-    # Cria lista com tamanho posições e cada posição com o valor -1
-    wb = [False]*(tamanho+1)
+    # Cria lista com tamanho posições e cada posição com o valor False
+    wb = [False]*(tamanho)
 
-    for i in range(1, tamanho+1):
+    for i in range(1, tamanho):
         
         # Se wb[i] for False, checamos se o prefixo está no dicionário
         if wb[i] == False and string[0:i] in dicionario:
@@ -404,7 +404,7 @@ def dynamicWordBreak(string, dicionario):
             if i == tamanho:
                 return True
             
-            for j in range(i+1, tamanho+1):
+            for j in range(i+1, tamanho):
 
                 # Atualiza wb[j] se for False e está no dicionário
                 if wb[j] == False and string[i:j] in dicionario:
@@ -432,8 +432,9 @@ Agora podemos comparar a eficiência dos dois algoritmos!
 | Algoritmo            |  Complexidade              |
 |----------------------|----------------------------|
 | **Recursivo**        | {red}(**Exponencial**)     | 
-| **Dinâmico**         | {green}(**Linear**) |
+| **Dinâmico**         | {green}(**Linear**)        |
 
+Claramente o algoritmo de programação dinâmica é muito melhor, e é dai que vem o seu nome. Agora está na hora de praticar um pouco o que foi apresentado para vocês acima. Faça os exercícios abaixo.
 
 ??? Exercício 1
 
@@ -487,7 +488,7 @@ True
 Dado o dicionário abaixo, o que seria printado no terminal?
 
 ``` py 
-dicionario = {'quero', 'não', 'comer', 'lápis', 'bolo', 'cadeira', 'de', 'chá', ''}
+dicionario = {'quero', 'não', 'comer', 'lápis', 'bolo', 'cadeira', 'de', 'chá'}
 
 print(wordBreak('querolápisdechá', dicionario))
 print(wordBreak('comercomerbolo', dicionario))
@@ -511,8 +512,65 @@ True
 ```
 
 !!! Cuidado
+
 Repare que na útlima chamada, a palavra `md querobo` presente no dicionário faz com que a única sequência de palavras possível seria: `md quero bolo de chá`, pois quando o algoritmo checar o cojunto de caracteres `md querobo`, vai ver que está presente no dicionário e vai recursivamente checar se o sufixo pode formar uma sequência, mas o sufixo `md lodechá` não permite formar um sequência que está presente no dicionário!
+
 !!!
+
+:::
+
+???
+
+??? Exercício 4
+
+Dado o dicionário e a string de entrada abaixo, o que seria printado no terminal?
+
+``` py 
+dicionario = {'quero', 'não', 'comer', 'lápis', 'bolo', 'cadeira', 'de', 'chá'}
+string = 'nãoqueroocomercadeira'
+
+print(wordBreak(string, dicionario))
+```
+
+::: Gabarito
+
+Seria printado `md False`, pois não é possível separar a string de entrada por causa do caractere `md 'o'` presente no meio da string de entrada. Isso porque no dicionário existe a palavra `md 'quero'` e a palavra `md 'comer'` mas não existe a palavra `md 'queroo'`. Por conta disso, o algoritmo ia retornar `md False`.
+
+:::
+
+???
+
+??? Desafio
+
+Refatore o algoritmo recursivo. É possível escrever ele com apenas 4 linhas de código.
+
+``` py 
+def wordBreak(string, dicionario):
+    tamanho = len(string)
+
+    if string == '':
+        return True
+
+    for i in range(1, tamanho):
+        if string[0:i] in dicionario and wordBreak(string[i:tamanho], dicionario):
+            return True
+        
+    return False
+```
+
+::: Gabarito
+
+``` py 
+def wordBreak(string, dicionario):
+    tamanho = len(string)
+
+    if string == '':
+        return True
+
+    return any([string[0:i] in dicionario and wordBreak(string[i:tamanho], dicionario) for i in range(1, tamanho)])
+```
+
+O segredo aqui é a função `md any()` do python, ela retorna `md True` se qualquer item da lista passada como parâmetro é `md True`, caso contrário a função retorna `md False`. Isso é o suficiente para nosso algoritmo continuar funcionando e ter apenas 4 linhas. O código acima é um pouco avançado, se tiver dúvida chame um de nós.
 
 :::
 
