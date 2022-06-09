@@ -140,9 +140,28 @@ Agora, precisamos checar se uma parte dessa string está presente no dicionário
 
 ??? Atividade 2
 
-Lembre que o `md for` começa do segundo caractere e vai até ao último e isso vai ser muito útil para nós. Pense
+Lembre que o `md for` começa do segundo caractere e vai até ao último e isso vai ser muito útil para nós. Pense no porque ele começa no segundo caractere e não no primeiro.
+
+**Dica:** Lembre de fatiamento de strings em python. Caso não se lembre, pesquise.
+
+::: Gabarito
+
+Essa parte da string que devemos checar se está no dicionário em cada iteração do `md for` é a string inicial fatiada do índice 0 até o índice `md i`. O nosso for começando pelo segundo caractere nos permite escrever o código abaixo.
+
+``` py 
+def wordBreak(string, dicionario):
+    tamanho = len(string)
+
+    for i in range(1, tamanho):
+        if string[0:i] in dicionario and resto da string pode ser quebrada em palavras do dicionário:
+
+```
+
+:::
 
 ???
+
+Ótimo, estamos progredindo, o nosso código atual está assim:
 
 ``` py 
 def wordBreak(string, dicionario):
@@ -155,7 +174,18 @@ def wordBreak(string, dicionario):
 
 Vamos deixar a parte do `md resto da string pode ser quebrada em palavras do dicionário` para depois, mas já vai imaginando o que entra aqui.
 
-Se essas condições forem ambas verdadeiras, significa que é possível segmentar a string inicial em palavras do dicionário, por isso, podemos retornar True. Sendo assim, se o `md for` finalizar e não retornar True significa que não é possível segmentar a string inicial.
+??? Atividade 3
+
+Agora pare e pense um pouco sobre essa condição dentro do `md if`, o que acontece se ela for verdadeira? E se ela for falsa?
+
+**Dica:** O que significa a string inicial fatiada do índice 0 até o índice `md i` estar no dicionário e o resto dela poder ser de fato quebrado em palavras que estão presentes no dicionário?
+**Dica 2:** O que significa o nosso `md for` acabar e a função ainda não tiver nenhum retorno?
+
+::: Gabarito
+
+A string inicial fatiada estar dentro do dicionário e o resto dela poder ser de fato quebrado em palavras que estão no dicionário é exatamente o que nosso problema tenta resolver, ou seja, a função deve retornar `md True`, pois a string inicial **PODE** ser quebrada em palavras do dicionário.
+
+Mas, o que acontece se o `md for` acabar e a função ainda sim não ter retornado nada? É exatamente o contrário do que foi dito acima, a palavra **NÃO PODE** ser quebrada em palavras do dicionário e por isso retornamos `md False` logo após o `md for`.
 
 ``` py 
 def wordBreak(string, dicionario):
@@ -169,7 +199,36 @@ def wordBreak(string, dicionario):
 
 ```
 
-Estamos quase lá! Agora, vamos pensar sobre a comparação `md resto da string pode ser quebrada em palavras do dicionário`. Se pensar bem, o que nossa função faz no momento é checar se uma substring está no dicionário e se o resto dela também está e isso é exatamente o que a gente quer, então basta escrevermos a mesma função para finalizar o algoritmo. Mas, o que significa escrever/fazer a mesma função? Podemos simplesmente chamar ela novamente usando recursividade e passar como parâmetros o resto da string inicial que falta ser comparada, e isso é bem simples. Usando o fatiamento de strings do python, podemos simplesmente escrever `md string[i:tamanho]` para representar a string restante!
+:::
+
+???
+
+Estamos quase lá! Agora, vamos voltar na comparação `md resto da string pode ser quebrada em palavras do dicionário`. O que nossa função faz no momento é checar se uma fatia da string inicial está no dicionário e se o restante dela pode ser quebrado em palavras do dicionário, certo? Porém, se você pensar bem, a nossa função faz exatamente isso, não? Ela checa se uma string inicial pode ser quebrada em palavras de um determinado dicionário, a única diferença da nossa função para o que queremos fazer em `md resto da string pode ser quebrada em palavras do dicionário` é que o resto da string não vai ser a string inicial e sim uma parte dela.
+
+??? Atividade 4
+
+Pensando nisso, tente deduzir o que precisa ser feito para resolver a comparação `md resto da string pode ser quebrada em palavras do dicionário`. 
+
+**Dica:** Lembre do que foi estudado no início da matéria de Desafios da Programação.
+
+::: Gabarito
+
+Se você pensou em usar recursividade, você acertou! Para resolver isso, basta chamar a nossa função recursivamente passando os parâmetros corretos. Como o nosso objetivo é checar se o **resto** da string pode ser quebrado em palavras do dicionário, precisamos passar como parâmetro esse resto da string e o dicionário inicial. O dicionário é o mesmo, então simplesmente reescrevemos, mas o resto da string pode ser um pouco difícil de enxergar. Usando fatiamento de strings e o índice `md i` que temos no nosso `md for`, podemos representar o **resto** da string como `md string[i:tamanho]`! Dessa forma, nossa função ficaria:
+
+``` py 
+def wordBreak(string, dicionario):
+    tamanho = len(string)
+
+    for i in range(1, tamanho):
+        if string[0:i] in dicionario and wordBreak(string[i:tamanho], dicionario):
+            return True
+        
+    return False
+```
+
+:::
+
+???
 
 ``` py 
 def wordBreak(string, dicionario):
@@ -186,14 +245,67 @@ Faz sentido, não faz? ;)
 
 Pronto, então temos o código do nosso algoritmo que resolve o problema!
 
-Calma..., nosso algoritmo ainda não está 100% pronto, ele possui dois erros:
+Calma..., nosso algoritmo ainda não está 100% pronto, ele possui um problema.
 
-1. O primeiro erro é sobre a função range(). Em python, a função range() recebe como segundo parâmetro onde devemos parar, porém esse número não está incluso, por isso devemos adicionar 1 no tamanho da string para poder percorrer ela até o final!
+??? Atividade 5
 
-2. O segundo erro é que a nossa função nunca vai acabar, porque não temos uma condição para acabar com a recursividade. Para resolver esse problema, podemos colocar uma checagem se a string de entrada for vazia, pois no final do loop, a variável `md i` vai ser igual ao tamanho da string e por isso tentaremos passar para a função a string de entrada `md string[tamanho:tamanho]`, e isso é uma string vazia `md ''`. Caso essa checagem seja verdadeira, retornamos `md True`.
+Você consegue identificar esse erro?
+
+**Dica:** Lembre sobre os passos de como fazer uma função recursiva, mais especificamente um dos últimos passos.
+
+::: Caso não se lembre, clique aqui.
+
+1. entenda o que a função recebe e o que deveria fazer.
+2. adicione uma chamada recursiva ao código da função.
+3. passe para a chamada recursiva um parâmetro menor.
+4. não simularás e terás fé.
+5. você tem fé na resposta da chamada recursiva, então use-a.
+6. isole o caso em que o parâmetro é o menor possível.
+7. a solução desse caso é trivial, então calcule ela direto.
+
+:::
+
+::: Gabarito
+
+A nossa função recursiva precisa acabar em algum momento, caso contrário, poderemos ter problemas. Para solucionar isso, basta olharmos para o **Passo 6**. Precisamos isolar o caso em que o parâmetro é o menor possível, o que no nosso caso não é trivial pois nosso parâmetro não é simplesmente um número. Voltando um pouco, vimos que nossa código ia ficar assim: 
+
+``` py 
+def wordBreak(string, dicionario):
+    tamanho = len(string)
+
+    for i in range(1, tamanho):
+        if string[0:i] in dicionario and wordBreak(string[i:tamanho], dicionario):
+            return True
+        
+    return False
+```
+
+O parâmetro em questão é a string fatiada, e para isolar o caso em que esse parâmetro é o menor possível basta checar quando essa string for vazia, isso porque quando nossa variável `md i` tiver o mesmo valor que a variável tamanho, a operação `md string[tamanho:tamanho]` resulta em uma string vazia `md ''`. 
+
+O algoritmo com o erro corrigido fica assim:
+
+``` py 
+def wordBreak(string, dicionario):
+    tamanho = len(string)
+
+    if string == '':
+        return True
+
+    for i in range(1, tamanho+1):
+        if string[0:i] in dicionario and wordBreak(string[i:tamanho], dicionario):
+            return True
+        
+    return False
+```
+
+Retornamos `md True` pois uma string vazia `md ''` teoricamente está no dicionário, esse é o motivo.
+
+:::
+
+???
 
 Algoritmo Recursivo
---------
+-------------------
 
 Agora sim! Temos nosso algoritmo recursivo para o problema da quebra em palavras.
 
@@ -375,7 +487,7 @@ True
 Dado o dicionário abaixo, o que seria printado no terminal?
 
 ``` py 
-dicionario = {'quero', 'não', 'comer', 'lápis', 'bolo', 'cadeira', 'de', 'chá', 'querobo'}
+dicionario = {'quero', 'não', 'comer', 'lápis', 'bolo', 'cadeira', 'de', 'chá', ''}
 
 print(wordBreak('querolápisdechá', dicionario))
 print(wordBreak('comercomerbolo', dicionario))
